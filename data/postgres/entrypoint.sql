@@ -1,0 +1,614 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.7
+-- Dumped by pg_dump version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: currencies; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.currencies (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.currencies OWNER TO postgres;
+
+--
+-- Name: documents; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.documents (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.documents OWNER TO postgres;
+
+--
+-- Name: goods; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.goods (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.goods OWNER TO postgres;
+
+--
+-- Name: harmonization_goods; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.harmonization_goods (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.harmonization_goods OWNER TO postgres;
+
+--
+-- Name: harmonizations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.harmonizations (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.harmonizations OWNER TO postgres;
+
+--
+-- Name: images; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.images (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.images OWNER TO postgres;
+
+--
+-- Name: language_currencies; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.language_currencies (
+    language_id integer NOT NULL,
+    currency_id integer NOT NULL
+);
+
+
+ALTER TABLE public.language_currencies OWNER TO postgres;
+
+--
+-- Name: language_providers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.language_providers (
+    language_id integer NOT NULL,
+    provider_id integer NOT NULL
+);
+
+
+ALTER TABLE public.language_providers OWNER TO postgres;
+
+--
+-- Name: languages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.languages (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.languages OWNER TO postgres;
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.notifications (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.notifications OWNER TO postgres;
+
+--
+-- Name: TABLE notifications; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.notifications IS 'Уведомления';
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.orders OWNER TO postgres;
+
+--
+-- Name: payment_providers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.payment_providers (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.payment_providers OWNER TO postgres;
+
+--
+-- Name: payments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.payments (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.payments OWNER TO postgres;
+
+--
+-- Name: portfolios; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.portfolios (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.portfolios OWNER TO postgres;
+
+--
+-- Name: projects; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.projects (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.projects OWNER TO postgres;
+
+--
+-- Name: roles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.roles (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.roles OWNER TO postgres;
+
+--
+-- Name: TABLE roles; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.roles IS 'Роли пользователей';
+
+
+--
+-- Name: services; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.services (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.services OWNER TO postgres;
+
+--
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.subscriptions (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.subscriptions OWNER TO postgres;
+
+--
+-- Name: support; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.support (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.support OWNER TO postgres;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Data for Name: currencies; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.currencies (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: documents; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.documents (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: goods; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.goods (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: harmonization_goods; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.harmonization_goods (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: harmonizations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.harmonizations (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.images (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: language_currencies; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.language_currencies (language_id, currency_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: language_providers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.language_providers (language_id, provider_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: languages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.languages (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: notifications; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.notifications (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: payment_providers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.payment_providers (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.payments (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: portfolios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.portfolios (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.projects (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.roles (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: services; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.services (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.subscriptions (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: support; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.support (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id) FROM stdin;
+\.
+
+
+--
+-- Name: currencies currencies_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.currencies
+    ADD CONSTRAINT currencies_pk PRIMARY KEY (id);
+
+
+--
+-- Name: documents documents_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.documents
+    ADD CONSTRAINT documents_pk PRIMARY KEY (id);
+
+
+--
+-- Name: goods goods_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.goods
+    ADD CONSTRAINT goods_pk PRIMARY KEY (id);
+
+
+--
+-- Name: harmonization_goods harmonization_goods_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.harmonization_goods
+    ADD CONSTRAINT harmonization_goods_pk PRIMARY KEY (id);
+
+
+--
+-- Name: harmonizations harmonizations_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.harmonizations
+    ADD CONSTRAINT harmonizations_pk PRIMARY KEY (id);
+
+
+--
+-- Name: images images_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.images
+    ADD CONSTRAINT images_pk PRIMARY KEY (id);
+
+
+--
+-- Name: language_currencies language_currencies_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.language_currencies
+    ADD CONSTRAINT language_currencies_pk PRIMARY KEY (currency_id, language_id);
+
+
+--
+-- Name: language_providers language_providers_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.language_providers
+    ADD CONSTRAINT language_providers_pk PRIMARY KEY (language_id, provider_id);
+
+
+--
+-- Name: languages languages_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.languages
+    ADD CONSTRAINT languages_pk PRIMARY KEY (id);
+
+
+--
+-- Name: notifications notifications_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pk PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pk PRIMARY KEY (id);
+
+
+--
+-- Name: payment_providers payment_providers_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payment_providers
+    ADD CONSTRAINT payment_providers_pk PRIMARY KEY (id);
+
+
+--
+-- Name: payments payments_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_pk PRIMARY KEY (id);
+
+
+--
+-- Name: portfolios portfolios_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.portfolios
+    ADD CONSTRAINT portfolios_pk PRIMARY KEY (id);
+
+
+--
+-- Name: projects projects_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT projects_pk PRIMARY KEY (id);
+
+
+--
+-- Name: roles roles_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roles
+    ADD CONSTRAINT roles_pk PRIMARY KEY (id);
+
+
+--
+-- Name: services services_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.services
+    ADD CONSTRAINT services_pk PRIMARY KEY (id);
+
+
+--
+-- Name: subscriptions subscriptions_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT subscriptions_pk PRIMARY KEY (id);
+
+
+--
+-- Name: support support_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.support
+    ADD CONSTRAINT support_pk PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pk PRIMARY KEY (id);
+
+
+--
+-- Name: language_currencies language_currencies_currencies_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.language_currencies
+    ADD CONSTRAINT language_currencies_currencies_id_fk FOREIGN KEY (currency_id) REFERENCES public.currencies(id);
+
+
+--
+-- Name: language_currencies language_currencies_languages_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.language_currencies
+    ADD CONSTRAINT language_currencies_languages_id_fk FOREIGN KEY (language_id) REFERENCES public.languages(id);
+
+
+--
+-- Name: language_providers language_providers_languages_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.language_providers
+    ADD CONSTRAINT language_providers_languages_id_fk FOREIGN KEY (language_id) REFERENCES public.languages(id);
+
+
+--
+-- Name: language_providers language_providers_payment_providers_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.language_providers
+    ADD CONSTRAINT language_providers_payment_providers_id_fk FOREIGN KEY (provider_id) REFERENCES public.payment_providers(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
