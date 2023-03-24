@@ -247,6 +247,27 @@ COMMENT ON TABLE public.roles IS 'Роли пользователей';
 
 
 --
+-- Name: COLUMN roles.id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.roles.id IS 'ID';
+
+
+--
+-- Name: COLUMN roles.name; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.roles.name IS 'Название роли';
+
+
+--
+-- Name: COLUMN roles.code; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.roles.code IS 'Код роли';
+
+
+--
 -- Name: services; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -309,6 +330,160 @@ CREATE TABLE public.users (
 
 
 ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: TABLE users; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.users IS 'Пользователи';
+
+
+--
+-- Name: COLUMN users.id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.id IS 'ID';
+
+
+--
+-- Name: COLUMN users.email; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.email IS 'Email';
+
+
+--
+-- Name: COLUMN users.password_hash; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.password_hash IS 'Пароль хеш';
+
+
+--
+-- Name: COLUMN users.access_token; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.access_token IS 'Токен доступа JWT';
+
+
+--
+-- Name: COLUMN users.token_type; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.token_type IS 'Тип OAUTH токена';
+
+
+--
+-- Name: COLUMN users.expires_in; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.expires_in IS 'Время истечения OAUTH токена';
+
+
+--
+-- Name: COLUMN users.refresh_token; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.refresh_token IS 'Токен для обновления';
+
+
+--
+-- Name: COLUMN users.auth_type; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.auth_type IS 'Тип авторизации(Email,VK,GMail)';
+
+
+--
+-- Name: COLUMN users.name; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.name IS 'Имя пользователя';
+
+
+--
+-- Name: COLUMN users.last_name; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.last_name IS 'Фамилия пользователя';
+
+
+--
+-- Name: COLUMN users.restore_token; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.restore_token IS 'Токен для восстановления доступа';
+
+
+--
+-- Name: COLUMN users.phone; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.phone IS 'Телефон пользователя';
+
+
+--
+-- Name: COLUMN users.role_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.role_id IS 'ID роли';
+
+
+--
+-- Name: COLUMN users.last_pay; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.last_pay IS 'Дата последней оплаты';
+
+
+--
+-- Name: COLUMN users.language_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.language_id IS 'ID языка';
+
+
+--
+-- Name: COLUMN users.bonuses; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.bonuses IS 'Бонусы';
+
+
+--
+-- Name: COLUMN users.balance; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.balance IS 'Баланс';
+
+
+--
+-- Name: COLUMN users.currency_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.currency_id IS 'ID валюты';
+
+
+--
+-- Name: COLUMN users.is_superadmin; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.is_superadmin IS 'Флаг суперадмина';
+
+
+--
+-- Name: COLUMN users.created_at; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.created_at IS 'Дата создания';
+
+
+--
+-- Name: COLUMN users.updated_at; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.users.updated_at IS 'Дата обновления';
+
 
 --
 -- Data for Name: currencies; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -670,6 +845,13 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: CONSTRAINT users_currencies_id_fk ON users; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT users_currencies_id_fk ON public.users IS 'Ссылка на валюту';
+
+
+--
 -- Name: users users_languages_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -678,11 +860,25 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: CONSTRAINT users_languages_id_fk ON users; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT users_languages_id_fk ON public.users IS 'Ссылка на язык';
+
+
+--
 -- Name: users users_roles_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_roles_id_fk FOREIGN KEY (role_id) REFERENCES public.roles(id);
+
+
+--
+-- Name: CONSTRAINT users_roles_id_fk ON users; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT users_roles_id_fk ON public.users IS 'Ссылка на роль';
 
 
 --
