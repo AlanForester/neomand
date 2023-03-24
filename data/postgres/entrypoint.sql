@@ -32,15 +32,58 @@ CREATE TABLE public.currencies (
 ALTER TABLE public.currencies OWNER TO postgres;
 
 --
--- Name: documents; Type: TABLE; Schema: public; Owner: postgres
+-- Name: files; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.documents (
-    id integer NOT NULL
+CREATE TABLE public.files (
+    id integer NOT NULL,
+    parent_type character varying(255),
+    parent_id integer,
+    name character varying(255),
+    size integer,
+    extention character varying(255),
+    bucket character varying(255),
+    created_at date DEFAULT now(),
+    updated_at date
 );
 
 
-ALTER TABLE public.documents OWNER TO postgres;
+ALTER TABLE public.files OWNER TO postgres;
+
+--
+-- Name: COLUMN files.parent_type; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.files.parent_type IS 'Полиморфный тип связи с таблицей';
+
+
+--
+-- Name: COLUMN files.parent_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.files.parent_id IS 'Полиморфная связь по ID';
+
+
+--
+-- Name: COLUMN files.size; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.files.size IS 'Размер файла';
+
+
+--
+-- Name: COLUMN files.extention; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.files.extention IS 'Расширение файла';
+
+
+--
+-- Name: COLUMN files.bucket; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.files.bucket IS 'Корзина файла(Изображение, Документ...)';
+
 
 --
 -- Name: goods; Type: TABLE; Schema: public; Owner: postgres
@@ -74,17 +117,6 @@ CREATE TABLE public.harmonizations (
 
 
 ALTER TABLE public.harmonizations OWNER TO postgres;
-
---
--- Name: images; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.images (
-    id integer NOT NULL
-);
-
-
-ALTER TABLE public.images OWNER TO postgres;
 
 --
 -- Name: language_currencies; Type: TABLE; Schema: public; Owner: postgres
@@ -199,7 +231,9 @@ ALTER TABLE public.projects OWNER TO postgres;
 --
 
 CREATE TABLE public.roles (
-    id integer NOT NULL
+    id integer NOT NULL,
+    name character varying(255),
+    code character varying(255)
 );
 
 
@@ -250,7 +284,27 @@ ALTER TABLE public.support OWNER TO postgres;
 --
 
 CREATE TABLE public.users (
-    id integer NOT NULL
+    id integer NOT NULL,
+    email character varying(255),
+    password_hash character varying(255),
+    access_token character varying(255),
+    token_type character varying(255),
+    expires_in integer,
+    refresh_token character varying(255),
+    auth_type character varying(255),
+    name character varying(255),
+    last_name character varying(255),
+    restore_token character varying(255),
+    phone character varying(255),
+    role_id integer,
+    last_pay date,
+    language_id integer,
+    bonuses integer,
+    balance integer,
+    currency_id integer,
+    is_superadmin boolean DEFAULT false NOT NULL,
+    created_at date DEFAULT now(),
+    updated_at date
 );
 
 
@@ -265,10 +319,10 @@ COPY public.currencies (id) FROM stdin;
 
 
 --
--- Data for Name: documents; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: files; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.documents (id) FROM stdin;
+COPY public.files (id, parent_type, parent_id, name, size, extention, bucket, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -293,14 +347,6 @@ COPY public.harmonization_goods (id) FROM stdin;
 --
 
 COPY public.harmonizations (id) FROM stdin;
-\.
-
-
---
--- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.images (id) FROM stdin;
 \.
 
 
@@ -380,7 +426,7 @@ COPY public.projects (id) FROM stdin;
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.roles (id) FROM stdin;
+COPY public.roles (id, name, code) FROM stdin;
 \.
 
 
@@ -412,7 +458,7 @@ COPY public.support (id) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id) FROM stdin;
+COPY public.users (id, email, password_hash, access_token, token_type, expires_in, refresh_token, auth_type, name, last_name, restore_token, phone, role_id, last_pay, language_id, bonuses, balance, currency_id, is_superadmin, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -425,11 +471,26 @@ ALTER TABLE ONLY public.currencies
 
 
 --
--- Name: documents documents_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: files files_parent_pk2; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.documents
-    ADD CONSTRAINT documents_pk PRIMARY KEY (id);
+ALTER TABLE ONLY public.files
+    ADD CONSTRAINT files_parent_pk2 UNIQUE (parent_id, parent_type);
+
+
+--
+-- Name: CONSTRAINT files_parent_pk2 ON files; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT files_parent_pk2 ON public.files IS 'Родительская связь';
+
+
+--
+-- Name: files files_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.files
+    ADD CONSTRAINT files_pk PRIMARY KEY (id);
 
 
 --
@@ -454,14 +515,6 @@ ALTER TABLE ONLY public.harmonization_goods
 
 ALTER TABLE ONLY public.harmonizations
     ADD CONSTRAINT harmonizations_pk PRIMARY KEY (id);
-
-
---
--- Name: images images_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.images
-    ADD CONSTRAINT images_pk PRIMARY KEY (id);
 
 
 --
@@ -606,6 +659,30 @@ ALTER TABLE ONLY public.language_providers
 
 ALTER TABLE ONLY public.language_providers
     ADD CONSTRAINT language_providers_payment_providers_id_fk FOREIGN KEY (provider_id) REFERENCES public.payment_providers(id);
+
+
+--
+-- Name: users users_currencies_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_currencies_id_fk FOREIGN KEY (currency_id) REFERENCES public.currencies(id);
+
+
+--
+-- Name: users users_languages_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_languages_id_fk FOREIGN KEY (language_id) REFERENCES public.languages(id);
+
+
+--
+-- Name: users users_roles_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_roles_id_fk FOREIGN KEY (role_id) REFERENCES public.roles(id);
 
 
 --
