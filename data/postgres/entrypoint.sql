@@ -25,11 +25,27 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.currencies (
-    id integer NOT NULL
+    id integer NOT NULL,
+    name character varying,
+    code character varying
 );
 
 
 ALTER TABLE public.currencies OWNER TO postgres;
+
+--
+-- Name: COLUMN currencies.name; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.currencies.name IS 'Название валюты';
+
+
+--
+-- Name: COLUMN currencies.code; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.currencies.code IS 'Код валюты для ПП';
+
 
 --
 -- Name: files; Type: TABLE; Schema: public; Owner: postgres
@@ -41,7 +57,7 @@ CREATE TABLE public.files (
     parent_id integer,
     name character varying(255),
     size integer,
-    extention character varying(255),
+    extension character varying(255),
     bucket character varying(255),
     created_at date DEFAULT now(),
     updated_at date
@@ -72,10 +88,10 @@ COMMENT ON COLUMN public.files.size IS 'Размер файла';
 
 
 --
--- Name: COLUMN files.extention; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN files.extension; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN public.files.extention IS 'Расширение файла';
+COMMENT ON COLUMN public.files.extension IS 'Расширение файла';
 
 
 --
@@ -158,7 +174,13 @@ ALTER TABLE public.languages OWNER TO postgres;
 --
 
 CREATE TABLE public.notifications (
-    id integer NOT NULL
+    id integer NOT NULL,
+    type character varying,
+    "to" character varying,
+    user_id integer,
+    status smallint,
+    error text,
+    created_at date
 );
 
 
@@ -172,48 +194,242 @@ COMMENT ON TABLE public.notifications IS 'Уведомления';
 
 
 --
+-- Name: COLUMN notifications.type; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.notifications.type IS 'Тип отправляемого сообщения';
+
+
+--
+-- Name: COLUMN notifications."to"; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.notifications."to" IS 'Адресат';
+
+
+--
+-- Name: COLUMN notifications.user_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.notifications.user_id IS 'ID пользователя';
+
+
+--
+-- Name: COLUMN notifications.status; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.notifications.status IS 'Статус отправки';
+
+
+--
+-- Name: COLUMN notifications.error; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.notifications.error IS 'Ошибка';
+
+
+--
+-- Name: COLUMN notifications.created_at; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.notifications.created_at IS 'Дата отправки';
+
+
+--
 -- Name: orders; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.orders (
-    id integer NOT NULL
+    id integer NOT NULL,
+    document_id integer
 );
 
 
 ALTER TABLE public.orders OWNER TO postgres;
 
 --
+-- Name: COLUMN orders.document_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.orders.document_id IS 'Документ';
+
+
+--
 -- Name: payment_providers; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.payment_providers (
-    id integer NOT NULL
+    id integer NOT NULL,
+    name character varying,
+    url text
 );
 
 
 ALTER TABLE public.payment_providers OWNER TO postgres;
 
 --
+-- Name: COLUMN payment_providers.name; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payment_providers.name IS 'Название провайдера';
+
+
+--
+-- Name: COLUMN payment_providers.url; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payment_providers.url IS 'URL для редиректа пользователя(С кредами)';
+
+
+--
 -- Name: payments; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.payments (
-    id integer NOT NULL
+    id integer NOT NULL,
+    provider_id integer,
+    currency_id integer,
+    sum double precision,
+    payment_token text,
+    status smallint,
+    error text,
+    payed_at date,
+    created_at date,
+    user_id integer,
+    document_id integer
 );
 
 
 ALTER TABLE public.payments OWNER TO postgres;
 
 --
+-- Name: COLUMN payments.provider_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.provider_id IS 'ID провайдера';
+
+
+--
+-- Name: COLUMN payments.currency_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.currency_id IS 'ID валюты';
+
+
+--
+-- Name: COLUMN payments.sum; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.sum IS 'Сумма';
+
+
+--
+-- Name: COLUMN payments.payment_token; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.payment_token IS 'Токен на оплату(Заранее сгенеренный если есть)';
+
+
+--
+-- Name: COLUMN payments.status; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.status IS 'Статус оплаты';
+
+
+--
+-- Name: COLUMN payments.error; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.error IS 'Ошибка(Если есть)';
+
+
+--
+-- Name: COLUMN payments.payed_at; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.payed_at IS 'Дата успешной оплаты';
+
+
+--
+-- Name: COLUMN payments.created_at; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.created_at IS 'Дата создания';
+
+
+--
+-- Name: COLUMN payments.user_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.user_id IS 'ID пользователя';
+
+
+--
+-- Name: COLUMN payments.document_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.payments.document_id IS 'ID документа';
+
+
+--
 -- Name: portfolios; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.portfolios (
-    id integer NOT NULL
+    id integer NOT NULL,
+    user_id integer,
+    name character varying,
+    description text,
+    is_public boolean DEFAULT true NOT NULL,
+    created_at date DEFAULT now(),
+    updated_at date
 );
 
 
 ALTER TABLE public.portfolios OWNER TO postgres;
+
+--
+-- Name: COLUMN portfolios.user_id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.portfolios.user_id IS 'ID пользователя';
+
+
+--
+-- Name: COLUMN portfolios.name; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.portfolios.name IS 'Название';
+
+
+--
+-- Name: COLUMN portfolios.description; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.portfolios.description IS 'Описание';
+
+
+--
+-- Name: COLUMN portfolios.is_public; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.portfolios.is_public IS 'Является публичным';
+
+
+--
+-- Name: COLUMN portfolios.created_at; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.portfolios.created_at IS 'Дата создания';
+
+
+--
+-- Name: COLUMN portfolios.updated_at; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.portfolios.updated_at IS 'Дата обновления';
+
 
 --
 -- Name: projects; Type: TABLE; Schema: public; Owner: postgres
@@ -489,7 +705,7 @@ COMMENT ON COLUMN public.users.updated_at IS 'Дата обновления';
 -- Data for Name: currencies; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.currencies (id) FROM stdin;
+COPY public.currencies (id, name, code) FROM stdin;
 \.
 
 
@@ -497,7 +713,7 @@ COPY public.currencies (id) FROM stdin;
 -- Data for Name: files; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.files (id, parent_type, parent_id, name, size, extention, bucket, created_at, updated_at) FROM stdin;
+COPY public.files (id, parent_type, parent_id, name, size, extension, bucket, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -553,7 +769,7 @@ COPY public.languages (id) FROM stdin;
 -- Data for Name: notifications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.notifications (id) FROM stdin;
+COPY public.notifications (id, type, "to", user_id, status, error, created_at) FROM stdin;
 \.
 
 
@@ -561,7 +777,7 @@ COPY public.notifications (id) FROM stdin;
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.orders (id) FROM stdin;
+COPY public.orders (id, document_id) FROM stdin;
 \.
 
 
@@ -569,7 +785,7 @@ COPY public.orders (id) FROM stdin;
 -- Data for Name: payment_providers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.payment_providers (id) FROM stdin;
+COPY public.payment_providers (id, name, url) FROM stdin;
 \.
 
 
@@ -577,7 +793,7 @@ COPY public.payment_providers (id) FROM stdin;
 -- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.payments (id) FROM stdin;
+COPY public.payments (id, provider_id, currency_id, sum, payment_token, status, error, payed_at, created_at, user_id, document_id) FROM stdin;
 \.
 
 
@@ -585,7 +801,7 @@ COPY public.payments (id) FROM stdin;
 -- Data for Name: portfolios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.portfolios (id) FROM stdin;
+COPY public.portfolios (id, user_id, name, description, is_public, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -805,6 +1021,21 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: payments document_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT document_id FOREIGN KEY (document_id) REFERENCES public.files(id);
+
+
+--
+-- Name: CONSTRAINT document_id ON payments; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT document_id ON public.payments IS 'Ссылка на документ';
+
+
+--
 -- Name: language_currencies language_currencies_currencies_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -834,6 +1065,89 @@ ALTER TABLE ONLY public.language_providers
 
 ALTER TABLE ONLY public.language_providers
     ADD CONSTRAINT language_providers_payment_providers_id_fk FOREIGN KEY (provider_id) REFERENCES public.payment_providers(id);
+
+
+--
+-- Name: notifications notifications_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_users_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: CONSTRAINT notifications_users_id_fk ON notifications; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT notifications_users_id_fk ON public.notifications IS 'Ссылка на пользователя';
+
+
+--
+-- Name: orders orders_files_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_files_id_fk FOREIGN KEY (document_id) REFERENCES public.files(id);
+
+
+--
+-- Name: payments payments_currencies_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_currencies_id_fk FOREIGN KEY (currency_id) REFERENCES public.currencies(id);
+
+
+--
+-- Name: CONSTRAINT payments_currencies_id_fk ON payments; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT payments_currencies_id_fk ON public.payments IS 'Ссылка на валюту';
+
+
+--
+-- Name: payments payments_payment_providers_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_payment_providers_id_fk FOREIGN KEY (provider_id) REFERENCES public.payment_providers(id);
+
+
+--
+-- Name: CONSTRAINT payments_payment_providers_id_fk ON payments; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT payments_payment_providers_id_fk ON public.payments IS 'Ссылка на  провайдера ПП';
+
+
+--
+-- Name: payments payments_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT payments_users_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: CONSTRAINT payments_users_id_fk ON payments; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT payments_users_id_fk ON public.payments IS 'Ссылка на плательщика';
+
+
+--
+-- Name: portfolios portfolios_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.portfolios
+    ADD CONSTRAINT portfolios_users_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: CONSTRAINT portfolios_users_id_fk ON portfolios; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON CONSTRAINT portfolios_users_id_fk ON public.portfolios IS 'Ссылка на пользователя';
 
 
 --
