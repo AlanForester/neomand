@@ -66,7 +66,10 @@ docker-compose up
   - harmonization_bundles
 
 используются не 8 таблиц, а 1, по признаку поля на указание нужной сущности.
-Например: files(parent_type="Portfolio", parent_id="111", type="image")
+Например: 
+- files(parent_type="Portfolio", parent_id="111", type="image")
+- files(parent_type="Good", parent_id="222", type="image")
+- files(parent_type="Service", parent_id="333", type="document")
 
 Полиморфные связи используются для таблиц:
 - goods - Товары
